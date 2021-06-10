@@ -1,0 +1,19 @@
+{
+    "data": [{
+         "id": 1,
+        "kategori": "Pidana"
+        },
+        {
+        "id": 2,
+        "kategori": "Perdata"
+        },
+        {
+        "id": 3,
+        "kategori": "Tenagakerja"
+        },
+        {
+        "id": 4,
+        "kategori": "Bisnis"
+        }
+    ]
+}
