@@ -18,7 +18,7 @@ const Input = ({label, value, onChangeText, secureTextEntry, disable, select, se
       <Text style={styles.label}>{label}</Text>
       <View style={styles.picker}>
       <Picker
-      selectedValue={value} onValueChange={onValueChange}>
+      selectedValue={value} onValueChange={onChangeText}>
         {selectItem.map(item => {
           return (
             <Picker.Item
