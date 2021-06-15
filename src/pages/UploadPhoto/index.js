@@ -21,9 +21,10 @@ const UploadPhoto = ({navigation, route}) => {
         if (response.didCancel || response.error) {
           showMessage('Yaaah, kok foto mu tidak ditampilkan?');
         } else {
-          const source = {uri: response.uri};
-
-          setImageForDB(`data:${response.type};base64, ${response.base64}`);
+          console.log(`response`, response.assets[0])
+          const source = {uri: response.assets[0].uri};
+          
+          setImageForDB(`data:${response.assets[0].type};base64, ${response.assets[0].base64}`);
           setImage(source);
           setHasImage(true);
         }
