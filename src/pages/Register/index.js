@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Button, Gap, Header, Input, Loading} from '../../components';
 import {Firebase} from '../../config';
@@ -16,34 +16,28 @@ const Register = ({navigation}) => {
     email: '',
     password: '',
   });
-  const [itemKategori] = useState([
-    {
-      id: 1,
-      label: 'Hukum Pidana',
-      value: 'Pidana',
-    },
-    {
-      id: 2,
-      label: 'Hukum Perdata',
-      value: 'Perdata',
-    },
-    {
-      id: 3,
-      label: 'Hukum Tenagakerja ',
-      value: 'Tenagakerja',
-    },
-    {
-      id: 4,
-      label: 'Hukum Bisnis',
-      value: 'Bisnis',
-    },
-  ]);
-
+  const [itemKategori, setItemKategori] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const onContinue = () => {
-    console.log(form);
+  useEffect(() => {
+    Firebase.database()
+      .ref('kategori_hukum')
+      .on('value', snapshot => {
+        if (snapshot.val()) {
+          const data = [];
+          const dataSnapshot = snapshot.val();
+          dataSnapshot.map(kategori => {
+            data.push({
+              id: kategori.id,
+              kategori: kategori.kategori,
+            });
+          });
+          setItemKategori(data);
+        }
+      });
+  }, [navigation]);
 
+  const onContinue = () => {
     setLoading(true);
     Firebase.auth()
       .createUserWithEmailAndPassword(form.email, form.password)
@@ -68,7 +62,6 @@ const Register = ({navigation}) => {
 
         storeData('user', data);
         navigation.navigate('UploadPhoto', data);
-        console.log('register success: ', success);
       })
       .catch(error => {
         setLoading(false);
@@ -77,7 +70,6 @@ const Register = ({navigation}) => {
           message: errorMessage,
           type: 'danger',
         });
-        console.log('error: ', errorMessage);
       });
   };
   return (
