@@ -23,8 +23,8 @@ const Input = ({label, value, onChangeText, secureTextEntry, disable, select, se
           return (
             <Picker.Item
             key={item.id}
-            label={item.label}
-            value={item.value}
+            label={item.kategori}
+            value={item.kategori}
             />
           );
         })}

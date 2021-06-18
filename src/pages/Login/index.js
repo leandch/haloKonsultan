@@ -11,18 +11,15 @@ const Login = ({navigation}) => {
   const [loading, setLoading] = useState(false);
 
   const login = () => {
-    console.log('form: ', form);
     setLoading(true);
     Firebase.auth()
       .signInWithEmailAndPassword(form.email, form.password)
       .then(res => {
-        console.log('success: ', res);
         setLoading(false);
         Firebase.database()
           .ref(`konsultans/${res.user.uid}/`)
           .once('value')
           .then(resDB => {
-            console.log('data user: ', resDB.val());
             if (resDB.val()) {
               storeData('user', resDB.val());
               navigation.replace('MainApp');
@@ -30,7 +27,6 @@ const Login = ({navigation}) => {
           });
       })
       .catch(err => {
-        console.log('error: ', err);
         setLoading(false);
         showMessage({
           message: err.message,

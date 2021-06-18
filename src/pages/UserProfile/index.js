@@ -12,7 +12,6 @@ const UserProfile = ({navigation, route}) => {
         Firebase.auth()
           .signOut()
           .then(() => {
-            console.log('success sign out');
             navigation.replace('GetStarted');
           })
           .catch(err => {

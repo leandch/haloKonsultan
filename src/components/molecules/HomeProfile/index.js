@@ -13,7 +13,6 @@ const HomeProfile = ({onPress}) => {
     getData('user').then(res => {
       const data = res;
       data.image = {uri: res.image};
-      console.log('new profile: ', data);
       setProfile(data);
     });
   });
