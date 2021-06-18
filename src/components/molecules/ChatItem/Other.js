@@ -8,9 +8,7 @@ const Other = ({text, date, image}) => {
       <Image source={image} style={styles.image} />
       <View>
         <View style={styles.bubleChat}>
-          <Text style={styles.text}>
-            {text}
-          </Text>
+          <Text style={styles.text}>{text}</Text>
         </View>
         <Text style={styles.date}>{date}</Text>
       </View>

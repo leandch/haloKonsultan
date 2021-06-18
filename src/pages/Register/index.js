@@ -20,22 +20,22 @@ const Register = ({navigation}) => {
     {
       id: 1,
       label: 'Hukum Pidana',
-      value: 'Hukum Pidana',
+      value: 'Pidana',
     },
     {
       id: 2,
       label: 'Hukum Perdata',
-      value: 'Hukum Perdata',
+      value: 'Perdata',
     },
     {
       id: 3,
       label: 'Hukum Tenagakerja ',
-      value: 'Hukum Tenagakerja',
+      value: 'Tenagakerja',
     },
     {
       id: 4,
       label: 'Hukum Bisnis',
-      value: 'Hukum Bisnis',
+      value: 'Bisnis',
     },
   ]);
 

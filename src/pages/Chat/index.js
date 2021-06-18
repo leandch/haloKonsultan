@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import { showMessage } from 'react-native-flash-message';
+import {showMessage} from 'react-native-flash-message';
 import {ChatInput, ChatItem, Header} from '../../components';
-import { Firebase } from '../../config';
-import {colors, fonts, getData} from '../../utils';
+import {Firebase} from '../../config';
+import {colors, fonts, getData, getChatTime, setDateChat} from '../../utils';
 
 const Chat = ({navigation, route}) => {
     const dataKonsultan = route.params;
@@ -12,7 +12,7 @@ const Chat = ({navigation, route}) => {
     const [chatData, setChatData] = useState([]);
 
     useEffect(() => {
-        getDataFromLocal();
+        getDataUserFromLocal();
 
         const ChatID = `${dataKonsultan.data.uid}_${user.uid}`;
         const urlFirebase = `chat/${ChatID}/allChat/`;
@@ -20,6 +20,7 @@ const Chat = ({navigation, route}) => {
         Firebase.database()
         .ref(urlFirebase)
         .on('value', snapshot => {
+            if (snapshot.val()){
             const dataSnapshot = snapshot.val();
             const allDataChat = [];
             Object.keys(dataSnapshot).map(key => {
@@ -39,6 +40,7 @@ const Chat = ({navigation, route}) => {
                 });
             });
             setChatData(allDataChat);
+        }
         });
     }, [dataKonsultan.data.uid, user.uid]);
 
@@ -63,15 +65,17 @@ const Chat = ({navigation, route}) => {
         const urlFirebase = `chat/${chatID}/allChat/${setDateChat(today)}`;
         const urlMessageUser = `messages/${user.uid}/${chatID}`;
         const urlMessageKonsultan = `messages/${dataKonsultan.data.uid}/${chatID}`;
-        const dataHistoryChatForUser = {
-            lastContentChat: chatContent,
+        const dataHistoryChatUser = {
+            lastChat: chatContent,
+            lastChatDate: today.getTime(),
             uidPartner: dataKonsultan.data.uid,
         };
-        const dataHistoryChatForKonsultan = {
-            lastContentChat: chatContent,
+        const dataHistoryChatKonsultan = {
+            lastChat: chatContent,
             lastChatDate: today.getTime(),
             uidPartner: user.uid,
         };
+
         Firebase.database()
         .ref(urlFirebase)
         .push(data)
@@ -80,68 +84,62 @@ const Chat = ({navigation, route}) => {
             
             Firebase.database()
             .ref(urlMessageUser)
-            .set(dataHistoryChatForUser);
+            .set(dataHistoryChatUser);
 
             Firebase.database()
             .ref(urlMessageKonsultan)
-            .set(dataHistoryChatForKonsultan);
+            .set(dataHistoryChatKonsultan);
         })
         .catch(err => {
             showMessage({
                 message: err.message,
                 type: 'danger',
-            })
-        })
-    }
-  return (
-    <View style={styles.page}>
-      <Header
-        onPress={() => navigation.goBack()}
-        type="dark-profile"
-        title={dataKonsultan.data.nama}
-        text={dataKonsultan.data.kategori}
-        image={{uri: dataKonsultan.data.image}}
-        onPress={() => navigation.goBack}     
-      />
-      <View style={styles.content}>
-          <ScrollView 
-          showsVerticalScrollIndicator={false}
-          ref={scroll => {
-              this.scroll = scroll;
-          }} 
-          onContentSizeChange={() => this.scroll.scrollToEnd()}>
-              {chatData.map(chat => {
-                  return (
-                      <View key={chat.id}>
-                          <Text styles={styles.date}>{chat.id}</Text>
-                          {chat.data.map(itemChat => {
-                              const isMe = itemChat.data.sendBy === user.uid;
-                              return (
-                                  <ChatItem
-                                  key={itemChat.id}
-                                  isMe={isMe}
-                                  text={itemChat.data.chatContent}
-                                  date={itemChat.data.chatTime}
-                                  image={isMe ? null : {uri: dataKonsultan.data.image}}
-                              />
-                                )
-                          })}
-                      </View>
-                  )
-              })}
-          </ScrollView>
-          <View>
-              <ChatInput
-                 value={chatContent}
-                 onChangeText={value => setChatContent(value)}
-                 onButtonPress={chatSend}
-                 targetChat={dataKonsultan}
-              />
-    </View>
-    </View>
-    </View>
-  );
+            });
+        });
+    };
+    return (
+        <View style={styles.page}>
+        <Header
+            onPress={() => navigation.goBack()}
+            type="dark-profile"
+            title={dataKonsultan.data.nama}
+            text={dataKonsultan.data.kategori}
+            image={{uri: dataKonsultan.data.image}}
+            onPress={() => navigation.goBack}     
+        />
+        <View style={styles.content}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+                {chatData.map(chat => {
+                    return (
+                        <View key={chat.id}>
+                            <Text style={styles.date}>{chat.id}</Text>
+                            {chat.data.map(itemChat => {
+                                const isMe = itemChat.data.sendBy === user.uid;
+                                return (
+                                    <ChatItem
+                                    key={itemChat.id}
+                                    isMe={isMe}
+                                    text={itemChat.data.chatContent}
+                                    date={itemChat.data.chatTime}
+                                    image={isMe ? null : {uri: dataKonsultan.data.image}}
+                                />
+                                );
+                            })}
+                        </View>
+                    );
+                })}
+            </ScrollView>
+            </View>
+            <ChatInput
+                value={chatContent}
+                onChangeText={value => setChatContent(value)}
+                onButtonPress={chatSend}
+                targetChat={dataKonsultan}
+            />
+        </View>
+    );
 };
+
 export default Chat;
 
 const styles = StyleSheet.create({

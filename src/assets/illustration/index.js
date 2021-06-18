@@ -1,5 +1,5 @@
 import ILLogo from './logo-halokonsultan.svg';
-import ILLogokecil from './logo-halolbh_kecil.svg';
+import ILLogokecil from './logo-halokonsultan-small.svg';
 import ILGetstarted from './get-started.svg';
 import ILLogomerah from './logo-halolbh_kecil_merah.svg';
 import ILProfilenull from './user_photo_null.png';

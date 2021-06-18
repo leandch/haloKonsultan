@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {StyleSheet, View} from 'react-native';
-import {DummyKonsultan, DummyKonsultan1, DummyKonsultan2} from '../../assets';
 import {Header, ListUser} from '../../components';
 import { Firebase } from '../../config';
 import {colors} from '../../utils';
@@ -9,14 +8,14 @@ const PilihKonsultan = ({navigation, route}) => {
     const [listKonsultan, setListKonsultan] = useState([]);
     const itemKategori = route.params;
     useEffect(() => {
-        callKonsultanbyKategori(itemKategori.kategori);
-    }, [itemKategori.kategori]);
+        callKonsultanbyKategori(itemKategori.kategori_hukum);
+    }, [itemKategori.kategori_hukum]);
 
     const callKonsultanbyKategori = kategori => {
         Firebase.database()
         .ref('konsultans/')
         .orderByChild('kategori')
-        .equalTo(kategori)
+        .equalTo(kategori_hukum)
         .once('value')
         .then(res => {
             if (res.val()) {
@@ -37,7 +36,7 @@ const PilihKonsultan = ({navigation, route}) => {
     <View style={styles.page}>
       <Header
         type="dark"
-        title={`Pilih ${itemKategori.kategori}`}
+        title={`Pilih ${itemKategori.kategori_hukum}`}
         onPress={() => navigation.goBack()}
       />
       {listKonsultan.map(konsultan => {
@@ -46,7 +45,7 @@ const PilihKonsultan = ({navigation, route}) => {
               key={konsultan.id}
               type="next"
               pic={{uri: konsultan.data.image}}
-              name={konsultan.data.name}
+              name={konsultan.data.nama}
               text={konsultan.data.lbh}
               onPress={() => navigation.navigate('ProfileKonsultan', konsultan)}
               />

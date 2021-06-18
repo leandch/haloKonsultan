@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {ILLogomerah} from '../../assets';
+import {ILLogokecil} from '../../assets';
 import {Input, Link, Button, Gap, Loading} from '../../components';
 import {colors, storeData, useForm} from '../../utils';
 import {Firebase} from '../../config';
@@ -42,7 +42,7 @@ const Login = ({navigation}) => {
     <>
       <View style={styles.page}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <ILLogomerah />
+          <ILLogokecil />
           <Gap height={50} />
           <Input
             label="Email"

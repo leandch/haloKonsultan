@@ -8,7 +8,7 @@ const ChatInput = ({value, onChangeText, onButtonPress, targetChat}) => {
     <View style={styles.content}>
       <TextInput
         style={styles.input}
-        placeholder={`Tulis Pesan Untuk ${targetChat.data.fullName}`}
+        placeholder={`Tulis Pesan Untuk ${targetChat.data.nama}`}
         value={value}
         onChangeText={onChangeText}
       />

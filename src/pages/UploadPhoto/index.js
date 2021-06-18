@@ -16,7 +16,7 @@ const UploadPhoto = ({navigation, route}) => {
 
   const getImage = () => {
     launchImageLibrary(
-      {quality: 0.75, maxHeight: 200, maxWidth: 200, includeBase64: true},
+      {quality: 0.75, maxHeight: 200, maxWidth: 200, includeBase64: true, selectionLimit: 1,},
       response => {
         if (response.didCancel || response.error) {
           showMessage('Yaaah, kok foto mu tidak ditampilkan?');

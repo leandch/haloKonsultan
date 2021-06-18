@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {DummyKonsultan, DummyKonsultan1, ILChat} from '../../assets';
-import {Gap} from '../../components/atoms';
 import {ListUser} from '../../components';
 import {colors, fonts, getData} from '../../utils';
 import { Firebase } from '../../config';
@@ -23,8 +21,8 @@ const Messages = ({navigation}) => {
 
                 const promises = await Object.keys(oldData).map(async key =>
                     {
-                        const urlUidKonsultan = `users/${oldData[key].uidPartner}`;
-                        const detailKonsultan = await rootDB.child(urlUidKonsultan).once('value');
+                        const urlUIDKonsultan = `users/${oldData[key].uidPartner}`;
+                        const detailKonsultan = await rootDB.child(urlUIDKonsultan).once('value');
                         data.push({
                             id: key,
                             detailKonsultan: detailKonsultan.val(),
@@ -49,6 +47,7 @@ const Messages = ({navigation}) => {
       <View style={styles.container}>
         <View style={styles.content}>
           <Text style={styles.header}>Messages</Text>
+          </View>
           {historyChat.map(chat => {
               const dataKonsultan = {
                   id: chat.detailKonsultan.uid,
@@ -57,14 +56,14 @@ const Messages = ({navigation}) => {
               return (
                   <ListUser 
                   key={chat.id}
-                  profile={{uri: chat.detailKonsultan.image}}
+                  image={{uri: chat.detailKonsultan.image}}
                   name={chat.detailKonsultan.nama}
-                  text={chat.lastContentChat}
+                  text={chat.lastChat}
                   onPress={() => navigation.navigate('Chat', dataKonsultan)} 
                   />
               )
           })}
-        </View>
+
         </View>
         </View>
   );
